@@ -1,0 +1,83 @@
+//GFG Problem K Sum Path(medium)
+//tree data structure
+//TC =O(N*2) SC = O(N)
+//this is approach 1
+//This gave TLE we have to optimize 
+
+class Solution{
+  public:
+
+//approach 1 it gives TLE
+   void solve(Node* root,int k,int &count,vector<int> path){
+      //base case 
+       if(root == NULL){
+           return;
+       }
+       path.push_back(root->data);
+       //call for left
+       solve(root->left,k,count,path);
+       //call for right
+       solve(root->right,k,count,path);
+      
+       int size = path.size();
+       int sum =0;
+       for(int i=size-1;i>=0;i--){
+           sum +=path[i];
+           if(sum == k){
+               count++;
+           }
+       }
+       path.pop_back();
+      
+   }
+
+int sumK(Node *root,int k)
+    {
+     //approach 1 gives TLE
+         vector<int> path;
+         int count =0;
+         solve(root,k,count,path);
+         return count;
+    }
+};
+
+----------------------------------------------------------------------------------------------------------Approach 2----------------------------------------------------------------------------------------------
+//this is approach 2 using hashmap
+// it optimized the time complexity 
+//TC = O(N) SC = O(N)
+
+class Solution{
+  public:
+
+//approach 2 using map to reduce time complexity 
+  unordered_map<int,int> mp;
+  void solve(Node* root, int k, int sum, int &ans){
+      //base case 
+      if(root == NULL){
+          return;
+     }
+     sum += root->data;
+     ans += mp[sum-k];
+     mp[sum]++;
+     
+     solve(root->left,k,sum,ans);
+     solve(root->right,k,sum,ans);
+     
+     mp[sum]--;
+     
+  }
+
+int sumK(Node *root,int k)
+    {
+        // code here 
+         int ans = 0;
+         mp[0] = 1;
+         int sum = 0;
+         solve(root,k,sum,ans);
+         return ans;
+        
+    }
+};
+
+
+
