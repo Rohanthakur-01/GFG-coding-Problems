@@ -1,0 +1,39 @@
+//GFG Problem Lowest Common Ancestor in a Binary Tree(medium)
+// tree data structure
+// TC =O(n) SC = O(n)
+
+class Solution
+{
+    public:
+    //Function to return the lowest common ancestor in a Binary Tree.
+    Node* lca(Node* root ,int n1 ,int n2 )
+    {
+       //Your code here
+       //base cas e
+       if(root == NULL){
+           return root;
+       }
+       
+       if(root ->data == n1 || root -> data == n2){
+           return root;
+       }
+       
+      Node* leftans = lca(root ->left,n1,n2);
+      Node* rightans = lca(root ->right, n1,n2);
+      
+      if(leftans != NULL && rightans == NULL){
+          return leftans;
+      }
+      else if(leftans == NULL && rightans != NULL){
+          return rightans;
+      }
+      else if(rightans !=   NULL && leftans != NULL){
+          return root;
+      }
+      else{
+          return NULL;
+      }
+      
+      
+    }
+};
