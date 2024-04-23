@@ -1,0 +1,48 @@
+//Construct Binary Tree from Inorder and Postorder
+//using c++
+//tree data structure
+//TC = O(N) SC = O(N)
+
+class Solution
+{
+    public:
+
+    int find(int in[],int inorderStart,int inorderEnd,int element,int n){
+        for(int i=inorderStart;i<=inorderEnd;i++){
+            if(in[i] == element){
+                return i;
+            }
+            }
+            return -1;
+        }
+        
+        Node* solve(int in[],int post[],int &index,int inorderStart,int inorderEnd,int n){
+        //base case 
+        if(index < 0 || inorderStart > inorderEnd){
+            return NULL;
+        }
+        int element = post[index--];
+        Node* root = new Node(element);
+        
+        int pos = find(in,inorderStart,inorderEnd,element,n);
+        
+
+        //right call
+         root -> right=solve(in,post,index,pos+1,inorderEnd,n);
+         
+         //left call
+         root -> left=solve(in,post,index,inorderStart,pos-1,n);
+        
+         return root;
+    }
+        
+    
+    //Function to return a tree created from postorder and inoreder traversals.
+    Node *buildTree(int in[], int post[], int n) {
+        // Your code here
+        int postorderIndex = n-1;
+        Node* ans = solve(in,post,postorderIndex,0,n-1,n);
+        return ans;
+        
+    }
+};
